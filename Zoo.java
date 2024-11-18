@@ -1,86 +1,129 @@
+import java.util.Scanner;
+
 interface AnimalActions {
-    void emitirSom();
-    void mover();
+    void emitSound();
+    void move();
 }
 
 abstract class Animal {
-    protected String nome;
-    protected String especie;
+    protected String name;
+    protected String species;
 
-    public Animal(String nome, String especie) {
-        this.nome = nome;
-        this.especie = especie;
+    public Animal(String name, String species) {
+        this.name = name;
+        this.species = species;
     }
 
-    public void exibirInfo() {
-        System.out.println("Nome: " + nome + ", Espécie: " + especie);
-    }
-}
-
-class Mamifero extends Animal implements AnimalActions {
-    public Mamifero(String nome) {
-        super(nome, "Mamífero");
-    }
-
-    @Override
-    public void emitirSom() {
-        System.out.println(nome + " faz som: 'Roar!'");
-    }
-
-    @Override
-    public void mover() {
-        System.out.println(nome + " está correndo!");
+    public void displayInformation() {
+        System.out.println("name: " + name + ", Specie: " + species);
     }
 }
 
-class Ave extends Animal implements AnimalActions {
-    public Ave(String nome) {
-        super(nome, "Ave");
+class Mammals extends Animal implements AnimalActions {
+    public Mammals(String name) {
+        super(name, "Mammals");
     }
 
     @Override
-    public void emitirSom() {
-        System.out.println(nome + " faz som: 'Canto!'");
+    public void emitSound() {
+        System.out.println(name + " makes sound: 'Roar!'");
     }
 
     @Override
-    public void mover() {
-        System.out.println(nome + " está voando!");
+    public void move() {
+        System.out.println(name + " is running!");
     }
 }
 
-class Reptil extends Animal implements AnimalActions {
-    public Reptil(String nome) {
-        super(nome, "Réptil");
+class Bird extends Animal implements AnimalActions {
+    public Bird(String name) {
+        super(name, "bird");
     }
 
     @Override
-    public void emitirSom() {
-        System.out.println(nome + " faz som: 'Sssss!'");
+    public void emitSound() {
+        System.out.println(name + " makes sound: 'Singing!'");
     }
 
     @Override
-    public void mover() {
-        System.out.println(nome + " está rastejando!");
+    public void move() {
+        System.out.println(name + " It's flying!");
+    }
+}
+
+class Reptile extends Animal implements AnimalActions {
+    public Reptile(String name) {
+        super(name, "Reptile");
+    }
+
+    @Override
+    public void emitSound() {
+        System.out.println(name + " makes sound: 'Sssss!'");
+    }
+
+    @Override
+    public void move() {
+        System.out.println(name + " It's crawling!");
     }
 }
 
 public class Zoo {
     public static void main(String[] args) {
-        AnimalActions[] animais = {
-                new Mamifero("Leão"),
-                new Ave("Papagaio"),
-                new Reptil("Cobra")
-        };
+        Scanner scanner = new Scanner(System.in);
 
-        for (AnimalActions animal : animais) {
-            System.out.println("----------");
-            if (animal instanceof Animal) {
-                ((Animal) animal).exibirInfo();
+        boolean continueCode = true;
+        while (continueCode){
+            System.out.println("Welcome to the zoo!");
+
+            System.out.print("\nSay the name of a mammal");
+            String mammalName = OnlyLetters(scanner);
+
+            System.out.println("\nSay the name of a bird");
+            String birdName = OnlyLetters(scanner);
+
+            System.out.println("\nSay the name of a Reptile");
+            String reptileName = OnlyLetters(scanner);
+            System.out.println("\n");
+
+            AnimalActions[] animais = {
+                    new Mammals(mammalName),
+                    new Bird(birdName),
+                    new Reptile(reptileName)
+            };
+
+            for (AnimalActions animal : animais) {
+                System.out.println("----------");
+                if (animal instanceof Animal) {
+                    ((Animal) animal).displayInformation();
+                }
+                animal.emitSound();
+                animal.move();
             }
-            animal.emitirSom();
-            animal.mover();
+
+            System.out.println("\nDo you want to enter more animals? (yes/no): ");
+            String response = scanner.nextLine();
+            if (response.equalsIgnoreCase("no")) {
+                continueCode = false;
+                System.out.println("\nBye bye!");
+            }
         }
+            scanner.close();
+    }
+
+    public static String OnlyLetters(Scanner scanner) {
+        String input;
+
+        while(true) {
+            System.out.println("(Enter only letters): ");
+            input = scanner.nextLine();
+
+            if (input.matches("[a-zA-Z ]+")) {
+                break;
+            } else {
+                System.out.println("\nInvalid input!");
+            }
+        }
+        return input;
     }
 }
 
