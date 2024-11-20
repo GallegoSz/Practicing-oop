@@ -1,5 +1,65 @@
 import java.util.Scanner;
 
+public class Zoo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        boolean continueCode = true;
+        while (continueCode){
+            System.out.println("Welcome to the zoo!");
+
+            System.out.print("\nSay the name of a mammal");
+            String mammalName = OnlyLetters(scanner);
+
+            System.out.println("\nSay the name of a bird");
+            String birdName = OnlyLetters(scanner);
+
+            System.out.println("\nSay the name of a Reptile");
+            String reptileName = OnlyLetters(scanner);
+            System.out.println("\n");
+
+            AnimalActions[] animais = {
+                    new Mammals(mammalName),
+                    new Bird(birdName),
+                    new Reptile(reptileName)
+            };
+
+            for (AnimalActions animal : animais) {
+                System.out.println("----------");
+                if (animal instanceof Animal) {
+                    ((Animal) animal).displayInformation();
+                }
+                animal.emitSound();
+                animal.move();
+            }
+
+            System.out.println("\nDo you want to enter more animals? (yes/no): ");
+            String response = scanner.nextLine();
+            if (response.equalsIgnoreCase("no")) {
+                continueCode = false;
+                System.out.println("\nBye bye!");
+            }
+        }
+            scanner.close();
+    }
+
+    public static String OnlyLetters(Scanner scanner) {
+        String input;
+
+        while(true) {
+            System.out.println("(Enter only letters): ");
+            input = scanner.nextLine();
+
+            if (input.matches("[a-zA-Z ]+")) {
+                break;
+            } else {
+                System.out.println("\nInvalid input!");
+            }
+        }
+        return input;
+    }
+}
+
 interface AnimalActions {
     void emitSound();
     void move();
@@ -66,64 +126,3 @@ class Reptile extends Animal implements AnimalActions {
         System.out.println(name + " It's crawling!");
     }
 }
-
-public class Zoo {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        boolean continueCode = true;
-        while (continueCode){
-            System.out.println("Welcome to the zoo!");
-
-            System.out.print("\nSay the name of a mammal");
-            String mammalName = OnlyLetters(scanner);
-
-            System.out.println("\nSay the name of a bird");
-            String birdName = OnlyLetters(scanner);
-
-            System.out.println("\nSay the name of a Reptile");
-            String reptileName = OnlyLetters(scanner);
-            System.out.println("\n");
-
-            AnimalActions[] animais = {
-                    new Mammals(mammalName),
-                    new Bird(birdName),
-                    new Reptile(reptileName)
-            };
-
-            for (AnimalActions animal : animais) {
-                System.out.println("----------");
-                if (animal instanceof Animal) {
-                    ((Animal) animal).displayInformation();
-                }
-                animal.emitSound();
-                animal.move();
-            }
-
-            System.out.println("\nDo you want to enter more animals? (yes/no): ");
-            String response = scanner.nextLine();
-            if (response.equalsIgnoreCase("no")) {
-                continueCode = false;
-                System.out.println("\nBye bye!");
-            }
-        }
-            scanner.close();
-    }
-
-    public static String OnlyLetters(Scanner scanner) {
-        String input;
-
-        while(true) {
-            System.out.println("(Enter only letters): ");
-            input = scanner.nextLine();
-
-            if (input.matches("[a-zA-Z ]+")) {
-                break;
-            } else {
-                System.out.println("\nInvalid input!");
-            }
-        }
-        return input;
-    }
-}
-
